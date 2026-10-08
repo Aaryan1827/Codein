@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quotiverse — Famous & Funky Aesthetic Quotes Engine</title>
+  <meta name="description" content="Immerse yourself in legendary, motivational, and funky quotes with aesthetic backgrounds, audio synths, 3D cards, and downloadable poster art.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- Application CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Dynamic Background Container & Animated Overlay -->
+  <div id="bg-container"></div>
+  <div id="bg-overlay"></div>
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="brand" onclick="location.reload()">
+      <span class="brand-icon">⚡</span>
+      <span>QUOTIVERSE</span>
+    </div>
+    
+    <div class="nav-actions">
+      <button class="nav-btn" id="btn-ambient" title="Toggle Chill Synth Audio">🎵 Sound: OFF</button>
+      <button class="nav-btn" id="btn-autoplay" title="Toggle Auto-Slideshow">⏱️ Auto: OFF</button>
+      <button class="nav-btn" id="btn-open-favs" title="View Saved Quotes">❤️ Saved</button>
+      <button class="nav-btn active" id="btn-open-create" title="Create Custom Quote">✏️ Create</button>
+    </div>
+  </header>
+
+  <!-- Category Filter Bar -->
+  <div class="category-bar-container">
+    <div class="category-bar">
+      <button class="cat-chip active" data-cat="all">✨ All Vibes</button>
+      <button class="cat-chip" data-cat="motivation">🚀 Motivation</button>
+      <button class="cat-chip" data-cat="funky">⚡ Funky & Witty</button>
+      <button class="cat-chip" data-cat="wisdom">🔮 Cosmic Wisdom</button>
+      <button class="cat-chip" data-cat="creativity">🎨 Creativity</button>
+      <button class="cat-chip" data-cat="zen">🧘 Zen & Peace</button>
+      <button class="cat-chip" data-cat="rebel">🔥 Mavericks</button>
+    </div>
+  </div>
+
+  <!-- Hero Interactive Stage -->
+  <main class="hero-stage">
+    <div class="quote-perspective-wrapper">
+      <article class="quote-card" id="quote-card">
+        <div class="quote-card-content">
+          <!-- Quote Badge -->
+          <div class="card-header-badge" id="quote-badge">✦ MOTIVATION ✦</div>
+          
+          <!-- Big Quote Mark -->
+          <div class="quote-mark">“</div>
+          
+          <!-- Quote Main Text -->
+          <blockquote class="quote-text" id="quote-text">
+            Loading legendary inspiration...
+          </blockquote>
+          
+          <!-- Author Attribution -->
+          <div class="quote-author" id="quote-author">— Quotiverse</div>
+          
+          <!-- Hashtags -->
+          <div class="quote-tags" id="quote-tags"></div>
+          
+          <!-- Action Buttons Toolbar -->
+          <div class="card-action-toolbar">
+            <button class="action-icon-btn" id="btn-favorite" title="Favorite Quote">🤍</button>
+            <button class="action-icon-btn" id="btn-speak" title="Read Aloud (Voice Speech)">🔊</button>
+            <button class="action-icon-btn" id="btn-copy" title="Copy Text">📋</button>
+            <button class="action-icon-btn" id="btn-download" title="Download Poster HD">🎨</button>
+            
+            <button class="cta-shuffle-btn" id="btn-shuffle">
+              <span>Shuffle Quote</span>
+              <span>⚡</span>
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Bottom Dock (Font Selector & Aesthetic Background Switcher) -->
+    <div class="side-controls-dock">
+      <div class="dock-item" id="btn-font" title="Click to Change Quote Font">
+        <span>🔤 Font:</span>
+        <span id="font-label" style="color: var(--secondary-glow);">Space Grotesk</span>
+      </div>
+
+      <div class="dock-item">
+        <span>🖼️ Aesthetic Backgrounds:</span>
+        <div class="bg-thumbs-row">
+          <div class="bg-thumb active" style="background-image: url('assets/images/bg-neon.jpg');" title="Neon Synthwave"></div>
+          <div class="bg-thumb" style="background-image: url('assets/images/bg-cosmic.jpg');" title="Cosmic Psychedelic"></div>
+          <div class="bg-thumb" style="background-image: url('assets/images/bg-retro.jpg');" title="Retro 70s Sunset"></div>
+          <div class="bg-thumb" style="background-image: url('assets/images/bg-pop.jpg');" title="Memphis Pop Art"></div>
+          <div class="bg-thumb" style="background-image: url('assets/images/bg-zen.jpg');" title="Surreal Zen Forest"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal: Favorites Library -->
+  <div class="modal-backdrop" id="modal-favorites">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 class="modal-title">❤️ Saved Favorites</h2>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="favorites-grid" id="favs-list-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Create Custom Quote -->
+  <div class="modal-backdrop" id="modal-create">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 class="modal-title">✏️ Create Custom Quote</h2>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="custom-quote-form">
+          <div class="form-group">
+            <label class="form-label">Quote Text</label>
+            <textarea class="form-textarea" id="custom-text" placeholder="Enter your inspiring or funky quote..." required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Author / Creator</label>
+            <input type="text" class="form-input" id="custom-author" placeholder="e.g. Yourself, Unknown Genius">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select class="form-select" id="custom-cat">
+              <option value="motivation">Motivation</option>
+              <option value="funky">Funky & Witty</option>
+              <option value="wisdom">Wisdom</option>
+              <option value="creativity">Creativity</option>
+              <option value="zen">Zen & Peace</option>
+              <option value="rebel">Maverick</option>
+            </select>
+          </div>
+          <button type="submit" class="cta-shuffle-btn" style="width: 100%; justify-content: center; margin-top: 1rem;">
+            <span>Add Quote to Engine</span>
+            <span>🚀</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- JavaScript Scripts -->
+  <script src="js/quotes.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/canvas-poster.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
