@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&family=Permanent+Marker&family=Space+Grotesk:wght@400;600;700&family=Syne:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amaranth:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&family=Permanent+Marker&family=Space+Grotesk:wght@400;600;700&family=Syne:wght@700;800&display=swap');
 
 :root {
   --primary-glow: #ff007f;
@@ -12,6 +12,7 @@
   --font-quote: 'Space Grotesk', sans-serif;
   --font-hand: 'Permanent Marker', cursive;
   --font-body: 'Outfit', sans-serif;
+  --font-amaranth: 'Amaranth', sans-serif;
   --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -303,6 +304,7 @@ body {
 .quote-text.font-syne { font-family: var(--font-heading); }
 .quote-text.font-hand { font-family: var(--font-hand); font-size: 2rem; line-height: 1.6; }
 .quote-text.font-outfit { font-family: var(--font-body); font-weight: 800; }
+.quote-text.font-amaranth { font-family: var(--font-amaranth); font-weight: 700; font-style: italic; }
 
 .quote-author {
   font-family: var(--font-body);

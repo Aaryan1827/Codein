@@ -7,8 +7,8 @@ class QuotiverseApp {
     this.currentQuoteIndex = 0;
     this.favorites = JSON.parse(localStorage.getItem('quotiverse_favs') || '[]');
     this.currentFontIndex = 0;
-    this.fontClasses = ['', 'font-syne', 'font-hand', 'font-outfit'];
-    this.fontNames = ['Space Grotesk', 'Syne', 'Marker', 'Outfit'];
+    this.fontClasses = ['', 'font-syne', 'font-hand', 'font-outfit', 'font-amaranth'];
+    this.fontNames = ['Space Grotesk', 'Syne', 'Marker', 'Outfit', 'Amaranth'];
     
     // Background images list
     this.backgrounds = [
